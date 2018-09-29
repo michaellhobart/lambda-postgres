@@ -27,7 +27,7 @@ exports.handler = (event, context, callback) => {
           statusCode: 200,
           headers: {
             "Access-Control-Allow-Origin" : "*", // Required for CORS
-            "Access-Control-Allow-Origin" : true // Required for cookies, auth headers with HTTPS
+            "Access-Control-Allow-Credentials" : true // Required for cookies, auth headers with HTTPS
           },
           body: res.rows
         }
