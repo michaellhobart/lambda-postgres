@@ -12,14 +12,16 @@ const pool = new Pool({
 
 exports.handler = (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
-  pool.connect((err, client, done) => {
-    if (err) throw err
-    client.query('SELECT * FROM mpc_clients', [1], (err, res) => {
-      if (err) {
-        console.log(err.stack)
-      } else {
-        console.log(res.rows[0])
-      }
-    })
+  pool.connect()
+  .then(client => {
+    return client.query('SELECT * FROM mpc_clients')
+      .then(res => {
+        client.release()
+        callback(null, res.rows)
+      })
+      .catch(e => {
+        client.release()
+        console.log(e.stack)
+      })
   })
 }
