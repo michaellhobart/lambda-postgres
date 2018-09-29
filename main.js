@@ -23,8 +23,17 @@ exports.handler = (event, context, callback) => {
       .then(res => {
         // Close Connection to DB
         client.release()
+        const response = {
+          statusCode: 200,
+          headers: {
+            "Access-Control-Allow-Origin" : "*", // Required for CORS
+            "Access-Control-Allow-Origin" : true // Required for cookies, auth headers with HTTPS
+          },
+          body: res.rows
+        }
+
         // Returns the response from the DB query as the lambda respinse
-        callback(null, res.rows)
+        callback(null, response)
       })
       // Handle any errors
       .catch(e => {
